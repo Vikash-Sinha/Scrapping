@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Filter form -->
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <form method="GET" enctype="multipart/form-data">
+            <div class="main-card mb-3 card col-md-12">
+                <div class="card-body">
+                    <h4 style="text-align:center;font-weight:600">Filter Table</h4>
+                    <div class="form-row">
+
+                        <div class="form-group col-md-3">
+                            <label for="state">State.</label>
+                            <input type="text" name="state" value="{{state|default:''}}" class="form-control" id="state" placeholder="Enter state">
+
+                        </div>
+                         <div class="form-group col-md-3">
+                            <label for="type">Type</label>
+                            <input type="text" name="type" value="{{type|default:''}}" class="form-control" id="type" placeholder="Enter Type">
+
+                        </div>
+                         <div class="form-group col-md-3">
+                            <label for="avg">Average View</label>
+                            <input type="text" name="avg" value="{{avg|default:''}}" class="form-control" id="avg" placeholder="Enter Average View">
+
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="subs">Subscriber</label>
+                            <input type="text" name="subs" value="{{subs|default:''}}" class="form-control" id="subs" placeholder="Enter Subscriber">
+
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="Influencer">Influencer</label>
+                            <input type="text" name="influencer" value="{{influancer|default:''}}" class="form-control" id="Influencer" placeholder="Enter Influencer">
+
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="name">Plateform.</label>
+                            <input type="text" name="platform" value="{{platform|default:''}}" class="form-control" id="name" placeholder="Enter Platform">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="lang">Language.</label>
+                            <input type="text" name="lang" value="{{lang|default:''}}" class="form-control" id="lang" placeholder="Enter Language">
+                        </div>
+
+                        <div class="form-group col-md-1">
+
+                            <input style="margin-top:24px;" type="checkbox" name="down" value="download" class="form-control" id="down" placeholder="Enter Language">
+                        </div>
+                        <div class="form-group col-md-1" style="margin-top:30px; margin-left:-30px;">
+                         <label for="down">Download.</label>
+                        </div>
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="name">Plateform.</label>-->
+<!--                            <input type="text" name="platform" class="form-control" id="name" placeholder="Enter Platform">-->
+<!--                        </div>-->
+
+                        <div class="form-group col-md-1" style="margin-top:30px;">
+                            <button type="submit" id="cal-risk" class="btn btn-secondary">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <!-- Close Filter Form -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Total Data ({{total}})</h1>
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="mb-0 table table-hover table-striped">
+                                <thead>
+                                <tr style="text-align:center;">
+                                    <th>Language</th>
+                                    <th>Plateform</th>
+                                    <th>State</th>
+                                    <th>Influencer</th>
+                                    <th>Channel Name</th>
+                                    <th>Type</th>
+                                    <th>Link</th>
+                                    <th>Subscriber</th>
+                                    <th>Avg_view</th>
+                                    <th>Feature</th>
+                                    <th>Review</th>
+                                    <th>Pokar</th>
+                                    <th>Contact_no</th>
+                                    <th>Email_id</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in scrap_obj %}
+                               <tr>
+                                   <td>{{data.language}}</td>
+                                   <td>{{data.plateform}}</td>
+                                   <td>{{data.state}}</td>
+                                   <td>{{data.influancer}}</td>
+                                   <td>{{data.channel_name}}</td>
+                                   <td>{{data.type}}</td>
+                                   <td><a href="{{data.link}}" target="_blank">{{data.link}}</a></td>
+                                   <td>{{data.subscriber}}</td>
+                                   <td>{{data.avg_view}}</td>
+                                   <td>{{data.feature}}</td>
+                                   <td>{{data.review}}</td>
+                                   <td>{{data.pokar}}</td>
+                                   <td>{{data.contact_no}}</td>
+                                   <td>{{data.email_id}}</td>
+                               </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if scrap_obj.has_other_pages %}
+								<ul class="pagination" style="float:right;">
+									{% if scrap_obj.has_previous %}
+									<li><a href="?page={{ scrap_obj.previous_page_number }}&state={{state|default:''}}&type={{type|default:''}}&avg={{avg|default:''}}&subs={{subs|default:''}}&influencer={{influancer|default:''}}&platform={{platform|default:''}}" class="btn btn-primary">{{ i }}"
+										   &laquo; Prev</a></li>
+									{% else %}
+									<li><a class="btn btn-default disabled">&laquo; Prev</a></li>
+									{% endif %}
+									{% for i in scrap_obj.paginator.page_range %}
+									{% if scrap_obj.number == i %}
+									<li><a class="btn btn-primary active">{{ i }} <span class="sr-only">(current)</span></a>
+									</li>
+									{% else %}
+									<li><a href="?page={{ i }}&state={{state|default:''}}&type={{type|default:''}}&avg={{avg|default:''}}&subs={{subs|default:''}}&influencer={{influancer|default:''}}&platform={{platform|default:''}}" class="btn btn-primary">{{ i }}</a></li>
+									{% endif %}
+									{% endfor %}
+									{% if scrap_obj.has_next %}
+									<li>
+                                        <a href="?page={{ scrap_obj.next_page_number }}&state={{state|default:''}}&type={{type|default:''}}&avg={{avg|default:''}}&subs={{subs|default:''}}&influencer={{influancer|default:''}}&platform={{platform|default:''}}" class="btn btn-primary">{{ i }}
+										    Next &raquo;</a>
+                                    </li>
+									{% else %}
+									<li><a class="btn btn-default disabled">Next &raquo;</a></li>
+									{% endif %}
+								</ul>
+								{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
